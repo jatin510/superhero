@@ -1,10 +1,11 @@
 const search = document.querySelector("#search");
 const results = document.querySelector("#results");
+const favouriteUI = document.querySelector("#fav");
 const localHostUrl = window.document.URL;
 
 var heroes;
 
-var favourites = [];
+var favouriteArr = [];
 
 // {
 //   id : String,
@@ -51,7 +52,7 @@ const showHeroes = async (key) => {
     );
 
     // clear the ul
-    results.innerHTML = "";
+    results.innerHTML = "<h2>Heroes</h2>";
 
     // populate the ul
     heroes.forEach((hero) => {
@@ -59,7 +60,7 @@ const showHeroes = async (key) => {
       let heroId = hero.id;
       let heroName = hero.name;
 
-      li.innerHTML = `<div id="div${heroId}">
+      li.innerHTML = `<div id="div${heroId}" name="${heroName}">
                           <p><a href="hero-info.html#${heroId}" onclick="heroInfo()" >${heroName}</a></p> 
                           <input type="checkbox" id="input${heroId}"class="favourite"/>
                       </div>`;
@@ -78,9 +79,62 @@ search.addEventListener("input", async (e) => {
   await showHeroes(searchTerm);
 });
 
+// render favourite
+//
+const renderFav = () => {
+  // making async call to fetch data
+
+  // ul of heroes
+  var ul = document.createElement("ul");
+
+  ul.classList.add("heroes");
+
+  // clear the ul
+  favouriteUI.innerHTML = "<h2>Favourite</h2>";
+
+  // populate the ul
+  favouriteArr.forEach((hero) => {
+    const li = document.createElement("li");
+    let heroId = hero.id;
+    let heroName = hero.name;
+
+    li.innerHTML = `<div id="div${heroId}" name="${heroName}">
+                          <p><a href="hero-info.html#${heroId}"  >${heroName}</a></p> 
+                          <button id="remove${heroId}" class="remove" >remove</button>
+                      </div>`;
+
+    ul.appendChild(li);
+  });
+
+  favouriteUI.appendChild(ul);
+};
+
+// favourite create
+var elem;
 addToFavourite = (inputId) => {
-  var elem = document.querySelector("#" + inputId).parentElement;
-  console.log(elem);
+  elem = document.querySelector("#" + inputId).parentElement;
+
+  var favData = {
+    name: elem.innerText,
+    id: elem.id.substring(3),
+  };
+
+  let find = favouriteArr.findIndex((hero) => hero.id == elem.id.substring(3));
+
+  if (find == -1) {
+    favouriteArr.push(favData);
+
+    renderFav();
+  }
+};
+
+removeFav = (taskId) => {
+  let id = taskId.substring(6);
+  console.log(id);
+
+  favouriteArr = favouriteArr.filter((hero) => hero.id != id);
+
+  renderFav();
 };
 // handle click event
 
@@ -90,6 +144,12 @@ handleClickListener = (e) => {
     console.log(taskId);
 
     addToFavourite(taskId);
+  }
+
+  if (e.target.className == "remove") {
+    const taskId = e.target.id;
+
+    removeFav(taskId);
   }
 };
 
