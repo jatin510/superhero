@@ -1,14 +1,17 @@
 const search = document.querySelector("#search");
 const results = document.querySelector("#results");
+const localHostUrl = window.document.URL;
 
 var heroes;
 
-const xhr = new XMLHttpRequest();
+var favourites = [];
 
-// using XMLHttpRequest
+const heroInfo = () => {
+  console.log("hello");
+};
+// newPage = async (key) => {
+//   const xhr = new XMLHttpRequest();
 
-// fetchHeroes = async (key) => {
-//   var xhr = new XMLHttpRequest();
 //   url = ` https://superheroapi.com/api/1469687849876867/search/${key}`;
 
 //   xhr.onload = () => {
@@ -25,29 +28,41 @@ fetchHeroes = async (key) => {
 };
 
 const showHeroes = async (key) => {
-  //   result.innerHTML = "";
+  // making async call to fetch data
   await fetchHeroes(key);
 
-  console.log("show ", heroes);
-
+  // ul of heroes
   var ul = document.createElement("ul");
 
   ul.classList.add("heroes");
-  heroes = heroes.results;
-  var names = heroes.filter((hero) =>
+
+  // filter all heroes starting with key
+  heroes = heroes.results.filter((hero) =>
     hero.name.toLowerCase().startsWith(key.toLowerCase())
   );
-  console.log(names);
-  names.forEach((hero) => {
-    const li = document.createElement("li");
 
-    li.classList.add("hero-item");
+  // clear the ul
+  results.innerHTML = "";
+
+  // populate the ul
+  heroes.forEach((hero) => {
+    const li = document.createElement("li");
+    let heroId = hero.id;
+    let heroName = hero.name;
+
+    li.innerHTML = `<div>
+                            <p><a href="hero-info.html#${heroId}" onclick="heroInfo()" >${heroName}</a></p> 
+                            <input type="checkbox" id="${heroId}"/>
+                    </div>`;
+
+    ul.appendChild(li);
   });
+
+  results.appendChild(ul);
 };
 
 search.addEventListener("input", (e) => {
   searchTerm = e.target.value;
-  console.log(searchTerm);
 
   showHeroes(searchTerm);
 });
