@@ -6,9 +6,16 @@ var heroes;
 
 var favourites = [];
 
+// {
+//   id : String,
+//   name : String,
+//   done : Boolean
+// }
+
 const heroInfo = () => {
   console.log("hello");
 };
+
 // newPage = async (key) => {
 //   const xhr = new XMLHttpRequest();
 
@@ -37,32 +44,36 @@ const showHeroes = async (key) => {
   ul.classList.add("heroes");
 
   // filter all heroes starting with key
-  heroes = heroes.results.filter((hero) =>
-    hero.name.toLowerCase().startsWith(key.toLowerCase())
-  );
+  console.log(heroes);
+  if (heroes.response == "success") {
+    heroes = heroes.results.filter((hero) =>
+      hero.name.toLowerCase().startsWith(key.toLowerCase())
+    );
 
-  // clear the ul
-  results.innerHTML = "";
+    // clear the ul
+    results.innerHTML = "";
 
-  // populate the ul
-  heroes.forEach((hero) => {
-    const li = document.createElement("li");
-    let heroId = hero.id;
-    let heroName = hero.name;
+    // populate the ul
+    heroes.forEach((hero) => {
+      const li = document.createElement("li");
+      let heroId = hero.id;
+      let heroName = hero.name;
 
-    li.innerHTML = `<div>
-                            <p><a href="hero-info.html#${heroId}" onclick="heroInfo()" >${heroName}</a></p> 
-                            <input type="checkbox" id="${heroId}"/>
-                    </div>`;
+      li.innerHTML = `<div>
+                          <p><a href="hero-info.html#${heroId}" onclick="heroInfo()" >${heroName}</a></p> 
+                          <input type="checkbox" id="${heroId}"/>
+                  </div>`;
 
-    ul.appendChild(li);
-  });
+      ul.appendChild(li);
+    });
 
-  results.appendChild(ul);
+    results.appendChild(ul);
+  } else if (heroes.response == "error") {
+    results.innerHTML = heroes.error;
+  }
 };
 
-search.addEventListener("input", (e) => {
-  searchTerm = e.target.value;
-
-  showHeroes(searchTerm);
+search.addEventListener("input", async (e) => {
+  searchTerm = await e.target.value;
+  await showHeroes(searchTerm);
 });
