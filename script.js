@@ -59,10 +59,10 @@ const showHeroes = async (key) => {
       let heroId = hero.id;
       let heroName = hero.name;
 
-      li.innerHTML = `<div>
+      li.innerHTML = `<div id="div${heroId}">
                           <p><a href="hero-info.html#${heroId}" onclick="heroInfo()" >${heroName}</a></p> 
-                          <input type="checkbox" id="${heroId}"/>
-                  </div>`;
+                          <input type="checkbox" id="input${heroId}"class="favourite"/>
+                      </div>`;
 
       ul.appendChild(li);
     });
@@ -77,3 +77,24 @@ search.addEventListener("input", async (e) => {
   searchTerm = await e.target.value;
   await showHeroes(searchTerm);
 });
+
+addToFavourite = (inputId) => {
+  var elem = document.querySelector("#" + inputId).parentElement;
+  console.log(elem);
+};
+// handle click event
+
+handleClickListener = (e) => {
+  if (e.target.className === `favourite`) {
+    const taskId = e.target.id;
+    console.log(taskId);
+
+    addToFavourite(taskId);
+  }
+};
+
+eventHandler = () => {
+  document.addEventListener("click", handleClickListener);
+};
+
+eventHandler();

@@ -5,12 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
   </head>
+
+  <style>
+    #result {
+      display: flex;
+    }
+    #results {
+      width: 50%;
+    }
+
+    #fav {
+      width: 40%;
+      float: right;
+    }
+  </style>
   <body>
     <input type="text" id="search" placeholder="Enter name" />
     <!-- <input type="submit" value="search" /> -->
 
     <br />
-    <div id="results"></div>
+    <div class="result">
+      <div id="results">
+        <h2>Heroes</h2>
+      </div>
+      <div id="fav">
+        <h2>Fav</h2>
+      </div>
+    </div>
     <script src="script.js"></script>
   </body>
 </html>
