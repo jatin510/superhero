@@ -31,13 +31,15 @@ const heroInfo = () => {
 // };
 
 fetchHeroes = async (key) => {
-  url = ` https://superheroapi.com/api/1469687849876867/search/${key}`;
-  heroes = await fetch(url).then((res) => res.json());
+  url = ` https://superheroapi.com/api.php/1469687849876867/search/${key}`;
+  heroes = await fetch(url)
+    .then((res) => res.json())
+    .catch((e) => console.log(e));
 };
 
 const showHeroes = async (key) => {
   // making async call to fetch data
-  await fetchHeroes(key);
+  await fetchHeroes(key, { mode: "no-cors" });
 
   // ul of heroes
   var ul = document.createElement("ul");
@@ -75,7 +77,7 @@ const showHeroes = async (key) => {
 };
 
 search.addEventListener("input", async (e) => {
-  searchTerm = await e.target.value;
+  searchTerm = e.target.value;
   await showHeroes(searchTerm);
 });
 

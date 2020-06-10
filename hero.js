@@ -7,7 +7,7 @@ heroId = arr[1];
 var heroData;
 
 const fetchHeroInfo = async (heroId) => {
-  url = `https://superheroapi.com/api/1469687849876867/${heroId}`;
+  url = `https://superheroapi.com/api.php/1469687849876867/${heroId}`;
   heroData = await fetch(url).then((res) => res.json());
 };
 
